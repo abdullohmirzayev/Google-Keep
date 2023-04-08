@@ -1,11 +1,12 @@
-import React from 'react'
+//components
+import SwipeDrawer from "./SwipeDrawer"
 
 const Home = () => {
-  return (
-    <>
-        hi
-    </>
-  )
+    return (
+        <>
+            <SwipeDrawer />
+        </>
+    )
 }
 
 export default Home
