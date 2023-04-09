@@ -2,6 +2,7 @@ import { useState, useRef, useContext } from "react";
 
 import { Box, TextField, ClickAwayListener } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { v4 as uuid } from 'uuid'
 
 import { DataContext } from "../../context/dataContext";
 
@@ -26,9 +27,9 @@ const note = {
 const Form = () => {
 
     const [shoxTextField, setShoxTextField] = useState(false);
-    const [addNotes, setAddNotes] = useState(note)
+    const [addNotes, setAddNotes] = useState({ ...note, id: uuid() })
 
-    const {notes, setNotes } = useContext(DataContext);
+    const { setNotes } = useContext(DataContext);
 
     const containerRef = useRef();
 
@@ -40,18 +41,30 @@ const Form = () => {
     const handleClickAway = () => {
         setShoxTextField(false);
         containerRef.current.style.minHeight = '30px'
+        setAddNotes({ ...note, id: uuid() })
+
+        if (addNotes.heading || addNotes.text) {
+            setNotes(prevArr => [addNotes, ...prevArr]);
+        }
+    }
+
+    const onTextChange = (e) => {
+        const changeNote = { ...addNotes, [e.target.name]: e.target.value }
+        setAddNotes(changeNote)
     }
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
-            <Container  ref={containerRef}>
+            <Container ref={containerRef}>
                 {shoxTextField &&
                     <TextField
                         placeholder="Title"
                         variant="standard"
                         InputProps={{ disableUnderline: true }}
                         style={{ marginBottom: 10 }}
-
+                        onChange={(e) => onTextChange(e)}
+                        name="heading"
+                        value={addNotes.heading}
                     />
                 }
                 <TextField
@@ -61,6 +74,9 @@ const Form = () => {
                     variant="standard"
                     InputProps={{ disableUnderline: true }}
                     onClick={onTextAreaClick}
+                    onChange={(e) => onTextChange(e)}
+                    name="text"
+                    value={addNotes.text}
                 />
 
             </Container>
