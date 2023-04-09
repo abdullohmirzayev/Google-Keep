@@ -1,12 +1,14 @@
 import './App.css';
 // components
 import Home from './components/home';
-
+import DataPrawer from './context/dataContext';
 
 function App() {
   return (
     <>
-      <Home />
+      <DataPrawer>
+        <Home />
+      </DataPrawer>
     </>
   );
 }
