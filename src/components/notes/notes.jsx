@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 
 import { styled } from '@mui/material/styles'
-import { Box } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 
 // copmonents
 import Form from './form';
 import Note from './note';
+import EmptyNotes from './EmptyNotes';
 
 import { DataContext } from '../../context/dataContext';
 
@@ -24,9 +25,18 @@ const Notes = () => {
           <DrawerHeader />
           <Form />
           {
-            notes.map(map => (
-              <Note />
-            ))
+            notes.length > 0 ?
+
+              <Grid container style={{ marginTop: 16 }}>
+                {
+                  notes.map(notes => (
+                    <Grid item>
+                      <Note notes={notes} />
+                    </Grid>
+                  ))
+                }
+              </Grid>
+              : <EmptyNotes />
           }
         </Box>
       </Box>
